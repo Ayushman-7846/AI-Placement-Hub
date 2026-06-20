@@ -24,37 +24,65 @@ datasource db {
   // NOTE: url is NOT here in Prisma 7 — it's in prisma.config.js
 }
 
-// ── Models (Phase 2+) ─────────────────────────────────────────────
+// ── Enums ─────────────────────────────────────────────────────────
+
+/// User roles for role-based access control.
+/// USER  — standard authenticated user
+/// ADMIN — administrative user with elevated privileges
+enum UserRole {
+  USER
+  ADMIN
+}
+
+// ── Models (Phase 2A) ─────────────────────────────────────────────
 //
-// Database Design Standards (MUST follow):
-//  ✅ UUID primary keys — use @id @default(uuid())
-//  ✅ snake_case field names — e.g., created_at, user_id
-//  ✅ created_at and updated_at timestamps on every model
-//  ✅ Explicit @map() for table names if needed
-//  ❌ NEVER use auto-increment integer IDs (@default(autoincrement()))
+// Database Design Standards (enforced):
+//  ✅ UUID primary keys — @id @default(uuid())
+//  ✅ snake_case field names — created_at, user_id, deleted_at
+//  ✅ created_at + updated_at on every model
+//  ✅ @@map() for explicit table names
+//  ✅ Soft delete via deleted_at (nullable DateTime)
+//  ❌ NEVER use auto-increment integer IDs
 //
-// Example Model Structure (DO NOT UNCOMMENT — add in Phase 2):
-//
-// model User {
-//   id         String   @id @default(uuid())
-//   email      String   @unique
-//   password   String
-//   first_name String
-//   last_name  String
-//   created_at DateTime @default(now())
-//   updated_at DateTime @updatedAt
-//
-//   @@map("users")
-// }
-//
-// Planned Models (Phase 2):
-//   - User
-//   - RefreshToken
+// Planned Models (Phase 3+):
 //   - InterviewSession
-//   - InterviewQuestion
 //   - InterviewAnswer
 //   - ResumeAnalysis
 //   - ProgressRecord
-//
-// Phase 1: Schema file with datasource + generator only.
-//          Models will be added in Phase 2.
+
+/// Core user record.
+/// Soft-deleted via deleted_at — never hard-deleted.
+/// password is a bcrypt hash — never returned in API responses.
+model User {
+  id         String    @id @default(uuid())
+  name       String
+  email      String    @unique
+  password   String
+  role       UserRole  @default(USER)
+  deleted_at DateTime?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  // Relations
+  refresh_tokens RefreshToken[]
+
+  @@map("users")
+}
+
+/// Refresh token store — one user may have many active tokens
+/// (e.g., multiple devices). Token rotation revokes the old record
+/// and inserts a new one atomically inside a transaction.
+model RefreshToken {
+  id         String   @id @default(uuid())
+  token      String   @unique
+  expires_at DateTime
+
+  created_at DateTime @default(now())
+
+  // Foreign key
+  user_id String
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("refresh_tokens")
+}

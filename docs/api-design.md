@@ -158,10 +158,9 @@ POST /api/v1/auth/register
 Content-Type: application/json
 
 {
+  "name": "John Doe",
   "email": "john@example.com",
-  "password": "SecurePass123!",
-  "firstName": "John",
-  "lastName": "Doe"
+  "password": "SecurePass123!"
 }
 ```
 

@@ -7,18 +7,20 @@
  *
  * Middleware stack (in order):
  *  1. Helmet      — Security headers
- *  2. CORS        — Cross-origin request handling
+ *  2. CORS        — Cross-origin request handling (credentials: true for cookies)
  *  3. Compression — gzip response compression
  *  4. Morgan      — HTTP request logging
- *  5. JSON Parser — Parse request bodies
- *  6. Rate Limiter — Protect against brute force / DDoS
- *  7. API Routes  — All /api/v1/ endpoints
- *  8. 404 Handler — Unknown routes
- *  9. Error Handler — Global error boundary
+ *  5. Body Parser — JSON + URL-encoded bodies
+ *  6. Cookie Parser — HTTP-only refresh token cookie reading
+ *  7. Rate Limiter — Protect against brute force / DDoS
+ *  8. API Routes  — All /api/v1/ endpoints
+ *  9. 404 Handler — Unknown routes
+ * 10. Error Handler — Global error boundary
  *
  * Phase 1: Middleware configured with placeholders.
  *          Routes and error handlers stubbed.
- * Phase 2: Add actual route implementations.
+ * Phase 2A: cookie-parser added for HTTP-only refresh token cookies.
+ *           CORS credentials enabled. Auth routes mounted.
  */
 
 import express from 'express';
@@ -26,6 +28,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import compression from 'compression';
 import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
 import { rateLimit } from 'express-rate-limit';
 
 import config from './config/index.js';
@@ -46,14 +49,16 @@ app.use(
   })
 );
 
-// ── 2. CORS ───────────────────────────────────────────────────────
+// ── 2. CORS ──────────────────────────────────────────────────
 // Allow only the configured client origin to make requests.
+// credentials: true is required so the browser sends the HTTP-only
+// refresh token cookie on cross-origin requests (Phase 2A+).
 app.use(
   cors({
     origin: config.cors.clientOrigin,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: false, // Set to true if using httpOnly cookies
+    credentials: true, // Required for HTTP-only refresh token cookies
     optionsSuccessStatus: 200, // Some legacy browsers choke on 204
   })
 );
@@ -67,12 +72,15 @@ app.use(compression());
 // 'combined' format in production: Apache combined log format
 app.use(morgan(config.server.isDevelopment ? 'dev' : 'combined'));
 
-// ── 5. Body Parsers ───────────────────────────────────────────────
+// ── 5. Body Parsers + Cookie Parser ─────────────────────────────────
 // Parse incoming request bodies as JSON
 app.use(express.json({ limit: '10mb' }));
 
 // Parse URL-encoded form data (for multipart/form-data file uploads, use multer)
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Parse cookies — required for reading the HTTP-only refresh token cookie
+app.use(cookieParser());
 
 // ── 6. Rate Limiting ─────────────────────────────────────────────
 // Limits repeated requests to the API — prevents brute force & DDoS

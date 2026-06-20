@@ -5,47 +5,57 @@
  *   PrismaClient now requires a driver adapter for database connections.
  *   The connection URL is passed to the adapter, NOT directly to PrismaClient.
  *
+ * Phase 2A: Driver adapter implemented using pg.Pool + PrismaPg.
+ *   This replaces the Phase 1 placeholder (which deferred the adapter).
+ *
  * This file exports a single shared instance of PrismaClient.
  * Using a singleton prevents "too many connections" issues in development
  * (hot reloads would create a new client on each file change otherwise).
  *
  * Dependencies:
- *  - @prisma/client — Prisma ORM client
- *  - @prisma/adapter-pg — PostgreSQL driver adapter (required by Prisma 7)
- *  - pg — PostgreSQL connection pool (peer dependency of adapter-pg)
+ *  - @prisma/client      — Prisma ORM client
+ *  - @prisma/adapter-pg  — PostgreSQL driver adapter (required by Prisma 7)
+ *  - pg                  — PostgreSQL connection pool (peer dependency of adapter-pg)
  *
  * Usage (in service files):
  *   import prisma from '../database/prisma.js';
  *   const users = await prisma.user.findMany();
  *
- * Phase 1: Client instantiated and exported — no queries yet.
- * Phase 2: Used by all service files for database operations.
- *
- * NOTE: You must install the pg adapter:
- *   npm install pg @prisma/adapter-pg
- *   (Add to server/package.json dependencies in Phase 2 when DB connection is needed)
+ * Interview question:
+ *   Q: Why use a connection pool instead of a single connection?
+ *   A: A pool pre-opens multiple DB connections and lends them to incoming
+ *      requests. Under load, multiple requests execute simultaneously without
+ *      waiting for a single connection to free up. This is critical for
+ *      production throughput on services like Neon (serverless PostgreSQL).
  */
 
+import pg from 'pg';
+import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '@prisma/client';
 import config from '../config/index.js';
 
 // ── Prisma Client Factory ─────────────────────────────────────────
 /**
- * Creates a PrismaClient instance.
+ * Creates a PrismaClient instance backed by a pg connection pool.
  *
- * Phase 1: Basic instantiation without driver adapter.
- *          (Driver adapter will be added in Phase 2 when connecting to the DB)
+ * The pg.Pool manages a pool of PostgreSQL connections.
+ * PrismaPg bridges pg and Prisma so Prisma uses the pool for all queries.
  *
- * Phase 2: Add driver adapter:
- *   import pg from 'pg';
- *   import { PrismaPg } from '@prisma/adapter-pg';
- *
- *   const pool = new pg.Pool({ connectionString: config.database.url });
- *   const adapter = new PrismaPg(pool);
- *   const prisma = new PrismaClient({ adapter });
+ * connectionString is read from DATABASE_URL (set in config/index.js which
+ * loads it from .env). This is the same URL used by prisma.config.js for
+ * CLI migrations.
  */
 const createPrismaClient = () => {
+  const pool = new pg.Pool({
+    connectionString: config.database.url,
+    // Neon (serverless) recommendation: keep pool size modest
+    max: 10,
+  });
+
+  const adapter = new PrismaPg(pool);
+
   return new PrismaClient({
+    adapter,
     log: config.server.isDevelopment
       ? [
           { emit: 'stdout', level: 'query' },
