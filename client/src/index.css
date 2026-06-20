@@ -1,0 +1,293 @@
+/**
+ * index.css — Global Stylesheet
+ *
+ * This is the main CSS entry point for the application.
+ * It is imported in main.jsx and processed by Tailwind CSS v4.
+ *
+ * ──────────────────────────────────────────────────────────────
+ * TAILWIND CSS v4 — KEY DIFFERENCES FROM v3:
+ * ──────────────────────────────────────────────────────────────
+ * 1. Use `@import "tailwindcss"` instead of @tailwind directives
+ * 2. Theme customization uses `@theme` directive (CSS variables)
+ * 3. No tailwind.config.js — all config lives here
+ * 4. Content auto-detection — no content[] array needed
+ * ──────────────────────────────────────────────────────────────
+ */
+
+/* Import Tailwind CSS v4 — replaces the old @tailwind base/components/utilities */
+@import "tailwindcss";
+
+/* ── Custom Theme Configuration (Tailwind v4 CSS-first) ────────
+   All design tokens are defined here as CSS custom properties.
+   These are available as Tailwind utilities: text-primary, bg-surface, etc.
+─────────────────────────────────────────────────────────────── */
+@theme {
+  /* ── Color Palette ─────────────────────────────────────────
+     Indigo-violet gradient system for a premium AI product feel
+  ─────────────────────────────────────────────────────────── */
+
+  /* Primary — Indigo */
+  --color-primary-50:  #eef2ff;
+  --color-primary-100: #e0e7ff;
+  --color-primary-200: #c7d2fe;
+  --color-primary-300: #a5b4fc;
+  --color-primary-400: #818cf8;
+  --color-primary-500: #6366f1;
+  --color-primary-600: #4f46e5;
+  --color-primary-700: #4338ca;
+  --color-primary-800: #3730a3;
+  --color-primary-900: #312e81;
+  --color-primary-950: #1e1b4b;
+
+  /* Secondary — Violet */
+  --color-secondary-50:  #f5f3ff;
+  --color-secondary-100: #ede9fe;
+  --color-secondary-200: #ddd6fe;
+  --color-secondary-300: #c4b5fd;
+  --color-secondary-400: #a78bfa;
+  --color-secondary-500: #8b5cf6;
+  --color-secondary-600: #7c3aed;
+  --color-secondary-700: #6d28d9;
+  --color-secondary-800: #5b21b6;
+  --color-secondary-900: #4c1d95;
+  --color-secondary-950: #2e1065;
+
+  /* Accent — Cyan */
+  --color-accent-400: #22d3ee;
+  --color-accent-500: #06b6d4;
+  --color-accent-600: #0891b2;
+
+  /* Success */
+  --color-success-400: #4ade80;
+  --color-success-500: #22c55e;
+  --color-success-600: #16a34a;
+
+  /* Warning */
+  --color-warning-400: #facc15;
+  --color-warning-500: #eab308;
+  --color-warning-600: #ca8a04;
+
+  /* Error */
+  --color-error-400: #f87171;
+  --color-error-500: #ef4444;
+  --color-error-600: #dc2626;
+
+  /* ── Surface Colors (Dark Mode Base) ───────────────────────── */
+  --color-surface-900: #0f0f1a;   /* Deepest background */
+  --color-surface-800: #13131f;   /* Main app background */
+  --color-surface-700: #1a1a2e;   /* Card backgrounds */
+  --color-surface-600: #1e1e35;   /* Elevated cards */
+  --color-surface-500: #252540;   /* Hover states */
+  --color-surface-400: #2d2d52;   /* Active/selected states */
+  --color-surface-border: #2a2a45; /* Border color */
+
+  /* ── Neutral Text Colors ────────────────────────────────────── */
+  --color-text-primary:   #f8fafc;  /* Main text */
+  --color-text-secondary: #94a3b8;  /* Muted text */
+  --color-text-tertiary:  #64748b;  /* Disabled/placeholder */
+  --color-text-accent:    #a5b4fc;  /* Accent text */
+
+  /* ── Typography ─────────────────────────────────────────────── */
+  --font-sans:  'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono:  ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, monospace;
+
+  /* ── Font Sizes (rem-based) ─────────────────────────────────── */
+  --text-xs:   0.75rem;
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
+  --text-lg:   1.125rem;
+  --text-xl:   1.25rem;
+  --text-2xl:  1.5rem;
+  --text-3xl:  1.875rem;
+  --text-4xl:  2.25rem;
+  --text-5xl:  3rem;
+
+  /* ── Border Radius ──────────────────────────────────────────── */
+  --radius-sm:  0.375rem;
+  --radius-md:  0.5rem;
+  --radius-lg:  0.75rem;
+  --radius-xl:  1rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* ── Spacing Scale ──────────────────────────────────────────── */
+  --spacing: 0.25rem; /* Base spacing unit (4px) */
+
+  /* ── Shadow System ──────────────────────────────────────────── */
+  --shadow-sm:    0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-md:    0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+  --shadow-lg:    0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+  --shadow-xl:    0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.4);
+  --shadow-glow:  0 0 40px rgb(99 102 241 / 0.3);
+  --shadow-glow-sm: 0 0 20px rgb(99 102 241 / 0.2);
+
+  /* ── Transitions ───────────────────────────────────────────── */
+  --transition-fast:   150ms ease;
+  --transition-base:   200ms ease;
+  --transition-slow:   300ms ease;
+  --transition-slower: 500ms ease;
+
+  /* ── Z-Index Scale ──────────────────────────────────────────── */
+  --z-dropdown: 100;
+  --z-sticky:   200;
+  --z-fixed:    300;
+  --z-modal:    400;
+  --z-toast:    500;
+}
+
+/* ── CSS Custom Properties (Runtime Variables) ─────────────────
+   These are standard CSS variables — referenced in component styles
+   and available globally without Tailwind utility classes.
+─────────────────────────────────────────────────────────────── */
+:root {
+  /* App background — deep dark */
+  --bg-app: var(--color-surface-800);
+  --bg-card: var(--color-surface-700);
+  --bg-card-hover: var(--color-surface-600);
+
+  /* Gradient definitions */
+  --gradient-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  --gradient-hero:    linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e1b4b 100%);
+  --gradient-card:    linear-gradient(135deg, rgba(99,102,241,0.1) 0%, rgba(139,92,246,0.05) 100%);
+  --gradient-glow:    radial-gradient(circle at 50% 0%, rgba(99,102,241,0.3) 0%, transparent 70%);
+}
+
+/* ── Base Styles ───────────────────────────────────────────────
+   Applied to all elements as the default design baseline.
+─────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  /* Smooth scrolling site-wide */
+  scroll-behavior: smooth;
+  /* Prevent layout shift from scrollbar appearing */
+  overflow-y: scroll;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-surface-800);
+  color: var(--color-text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+/* ── Focus Styles ───────────────────────────────────────────────
+   Accessible focus rings using primary color
+─────────────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ── Selection ─────────────────────────────────────────────────── */
+::selection {
+  background-color: var(--color-primary-600);
+  color: white;
+}
+
+/* ── Scrollbar Styling (Webkit) ─────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-surface-900);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-surface-400);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-600);
+}
+
+/* ── Root Container ─────────────────────────────────────────────── */
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Utility Classes (Custom — not covered by Tailwind defaults) ─── */
+
+/* Glassmorphism card effect */
+.glass-card {
+  background: rgba(26, 26, 46, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  border-radius: var(--radius-xl);
+}
+
+/* Primary gradient button */
+.btn-gradient {
+  background: var(--gradient-primary);
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: opacity var(--transition-base), transform var(--transition-fast), box-shadow var(--transition-base);
+}
+
+.btn-gradient:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-glow-sm);
+}
+
+.btn-gradient:active {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Gradient text effect */
+.gradient-text {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Subtle glow background effect for hero sections */
+.glow-bg {
+  background: var(--gradient-glow);
+}
+
+/* Animated gradient border */
+@keyframes gradient-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Fade in animation */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.4s ease forwards;
+}
+
+/* Pulse glow animation */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.2); }
+  50%       { box-shadow: 0 0 40px rgba(99, 102, 241, 0.5); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}

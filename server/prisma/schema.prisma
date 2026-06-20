@@ -1,0 +1,60 @@
+// This is your Prisma schema file.
+// Learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// ── Generator ────────────────────────────────────────────────────
+// Generates the Prisma Client — the type-safe database client
+// used in all service files.
+//
+// After any schema changes, run: npm run db:generate
+generator client {
+  provider = "prisma-client-js"
+  // output  = "../src/generated/prisma" // Optional: custom output path
+}
+
+// ── Datasource ────────────────────────────────────────────────────
+// Defines the database provider.
+// ⚠️  PRISMA 7 BREAKING CHANGE:
+//     The `url` property is no longer in schema.prisma.
+//     Connection URL is now configured in prisma.config.js (see server/prisma.config.js).
+//
+// ⚠️  IMPORTANT: Only PostgreSQL is used in this project.
+//     Do NOT change the provider to sqlite, mysql, or mongodb.
+datasource db {
+  provider = "postgresql"
+  // NOTE: url is NOT here in Prisma 7 — it's in prisma.config.js
+}
+
+// ── Models (Phase 2+) ─────────────────────────────────────────────
+//
+// Database Design Standards (MUST follow):
+//  ✅ UUID primary keys — use @id @default(uuid())
+//  ✅ snake_case field names — e.g., created_at, user_id
+//  ✅ created_at and updated_at timestamps on every model
+//  ✅ Explicit @map() for table names if needed
+//  ❌ NEVER use auto-increment integer IDs (@default(autoincrement()))
+//
+// Example Model Structure (DO NOT UNCOMMENT — add in Phase 2):
+//
+// model User {
+//   id         String   @id @default(uuid())
+//   email      String   @unique
+//   password   String
+//   first_name String
+//   last_name  String
+//   created_at DateTime @default(now())
+//   updated_at DateTime @updatedAt
+//
+//   @@map("users")
+// }
+//
+// Planned Models (Phase 2):
+//   - User
+//   - RefreshToken
+//   - InterviewSession
+//   - InterviewQuestion
+//   - InterviewAnswer
+//   - ResumeAnalysis
+//   - ProgressRecord
+//
+// Phase 1: Schema file with datasource + generator only.
+//          Models will be added in Phase 2.
