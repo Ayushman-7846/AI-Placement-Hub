@@ -2,28 +2,34 @@
  * App.jsx — Root Application Component
  *
  * Wires together:
- *  - React Router for client-side navigation
- *  - Global Context Providers (Auth, Theme — added in Phase 2)
- *  - Route definitions
+ *  - BrowserRouter: HTML5 history API-based client-side routing
+ *  - AuthProvider:  Global authentication state and session restoration
+ *  - AppRoutes:     Route definitions (public + protected)
  *
- * Phase 1: Minimal scaffold. Router and providers will be fully
- * implemented in Phase 2 when pages and auth are built.
+ * Provider Order (inside-out):
+ *   BrowserRouter > AuthProvider > AppRoutes
+ *
+ * AuthProvider is placed inside BrowserRouter so that AuthContext
+ * consumers can use useNavigate if needed (e.g., in future hooks).
+ *
+ * Phase 2B: AuthProvider added. ThemeProvider to follow in a later phase.
  */
 
 import { BrowserRouter } from 'react-router-dom';
+
+import { AuthProvider } from '@context';
 import AppRoutes from '@routes/index.jsx';
 
 function App() {
   return (
-    /**
-     * BrowserRouter provides HTML5 history API-based routing.
-     * All navigation happens client-side (SPA behavior).
-     *
-     * Phase 2: Wrap with AuthProvider, ThemeProvider, etc.
-     */
     <BrowserRouter>
-      {/* AppRoutes renders the correct page component based on the URL */}
-      <AppRoutes />
+      {/*
+       * AuthProvider runs session restoration on mount (POST /auth/refresh).
+       * It must be inside BrowserRouter so child hooks can use useNavigate.
+       */}
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
     </BrowserRouter>
   );
 }

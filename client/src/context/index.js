@@ -6,19 +6,13 @@
  *   import { AuthProvider, useAuthContext } from '@context';
  *   import { ThemeProvider, useTheme } from '@context';
  *
- * Phase 1: Barrel setup — providers implemented in Phase 2.
+ * Phase 2B: AuthContext implemented.
  */
 
-// ── Auth Context ─────────────────────────────────────────────────
-// Manages: isAuthenticated, user, login(), logout(), refreshToken()
-// export { AuthProvider, useAuthContext } from './AuthContext';
+// ── Auth Context ──────────────────────────────────────────────────
+// Manages: isAuthenticated, user, loading, login(), logout(), register()
+export { AuthProvider, useAuthContext } from './AuthContext.jsx';
 
-// ── Theme Context ─────────────────────────────────────────────────
-// Manages: theme (dark/light), toggleTheme()
+// ── Future Phases ─────────────────────────────────────────────────
 // export { ThemeProvider, useTheme } from './ThemeContext';
-
-// ── App Context ──────────────────────────────────────────────────
-// Manages: global loading state, notifications, modals
 // export { AppProvider, useAppContext } from './AppContext';
-
-export {}; // Phase 1 placeholder

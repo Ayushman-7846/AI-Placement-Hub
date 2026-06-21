@@ -175,12 +175,23 @@ export const login = async (data) => {
 
   // ── 1. Find user ────────────────────────────────────────────────
   // Include soft-deleted check — deleted users cannot log in
+  // findFirst is used (not findUnique) because deleted_at is not a unique
+  // field; combining it with a unique field in findUnique's where clause
+  // is not a valid Prisma query.
+  // const user = await prisma.user.findFirst({
+  //   where: {
+  //     email,
+  //     deleted_at: null,
+  //   },
+  // });
   const user = await prisma.user.findUnique({
-    where: {
-      email,
-      deleted_at: null,
-    },
-  });
+  where: {
+    email,
+  },
+});
+if (user?.deleted_at) {
+  throw new Error("User account deleted");
+}
 
   // ── 2. Validate credentials ─────────────────────────────────────
   // Always run bcrypt.compare() even if user is null to prevent timing attacks
@@ -283,7 +294,10 @@ export const logout = async (token) => {
  * @throws {Error} with 404 if user not found
  */
 export const getMe = async (userId) => {
-  const user = await prisma.user.findUnique({
+  // findFirst is used (not findUnique) because deleted_at is not a unique
+  // field; combining it with a unique field in findUnique's where clause
+  // is not a valid Prisma query.
+  const user = await prisma.user.findFirst({
     where: {
       id: userId,
       deleted_at: null,

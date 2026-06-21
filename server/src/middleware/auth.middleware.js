@@ -7,7 +7,7 @@
  * Request lifecycle:
  *   1. Read Authorization header → extract Bearer token
  *   2. verifyAccessToken() — throws on invalid sig or expiry
- *   3. prisma.user.findUnique() — confirms user still exists and is not soft-deleted
+ *   3. prisma.user.findFirst() — confirms user still exists and is not soft-deleted
  *   4. Attach req.user = { id, name, email, role } (password excluded)
  *   5. Call next()
  *
@@ -79,8 +79,10 @@ export const authenticate = async (req, res, next) => {
       });
     }
 
-    // ── 3. Load user from DB (soft-delete aware) ────────────────
-    const user = await prisma.user.findUnique({
+    // findFirst is used (not findUnique) because deleted_at is not a unique
+    // field; combining it with a unique field in findUnique's where clause
+    // is not a valid Prisma query.
+    const user = await prisma.user.findFirst({
       where: {
         id: decoded.id,
         deleted_at: null, // Reject soft-deleted accounts
