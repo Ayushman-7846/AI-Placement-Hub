@@ -66,6 +66,7 @@ model User {
 
   // Relations
   refresh_tokens RefreshToken[]
+  sessions       InterviewSession[]
 
   @@map("users")
 }
@@ -85,4 +86,83 @@ model RefreshToken {
   user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@map("refresh_tokens")
+}
+
+// ── Models (Phase 4A) ─────────────────────────────────────────────
+
+enum InterviewStatus {
+  CREATED
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum QuestionType {
+  TECHNICAL
+  BEHAVIORAL
+}
+
+enum InterviewType {
+  TECHNICAL
+  BEHAVIORAL
+  MIXED
+}
+
+model InterviewSession {
+  id            String          @id @default(uuid())
+  userId        String          @map("user_id")
+  title         String
+  role          String
+  difficulty    String
+  interviewType InterviewType   @map("interview_type")
+  status        InterviewStatus @default(CREATED)
+  questionCount Int             @map("question_count")
+  overallScore  Int?            @map("overall_score")
+  startedAt     DateTime?       @map("started_at")
+  completedAt   DateTime?       @map("completed_at")
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @updatedAt @map("updated_at")
+
+  user      User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  questions InterviewQuestion[]
+  answers   InterviewAnswer[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("interview_sessions")
+}
+
+model InterviewQuestion {
+  id           String       @id @default(uuid())
+  sessionId    String       @map("session_id")
+  question     String       @db.Text
+  questionType QuestionType @map("question_type")
+  order        Int
+  createdAt    DateTime     @default(now()) @map("created_at")
+
+  session InterviewSession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  answers InterviewAnswer[]
+
+  @@index([sessionId])
+  @@map("interview_questions")
+}
+
+model InterviewAnswer {
+  id          String   @id @default(uuid())
+  sessionId   String   @map("session_id")
+  questionId  String   @map("question_id")
+  answer      String   @db.Text
+  score       Int
+  strengths   Json
+  weaknesses  Json
+  suggestions Json
+  feedback    String   @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  session  InterviewSession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  question InterviewQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId])
+  @@index([questionId])
+  @@map("interview_answers")
 }

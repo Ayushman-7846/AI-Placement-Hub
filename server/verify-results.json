@@ -1,0 +1,270 @@
+[
+  {
+    "action": "Register User A",
+    "payload": {
+      "email": "user1_1782144034529@test.com"
+    },
+    "response": {
+      "status": 201,
+      "data": {
+        "success": true,
+        "message": "Account created successfully",
+        "data": {
+          "user": {
+            "id": "93894b1e-6c9d-4a89-a687-0203ba116d68",
+            "name": "User One",
+            "email": "user1_1782144034529@test.com",
+            "role": "USER",
+            "deleted_at": null,
+            "created_at": "2026-06-22T16:00:40.505Z",
+            "updated_at": "2026-06-22T16:00:40.505Z"
+          },
+          "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjkzODk0YjFlLTZjOWQtNGE4OS1hNjg3LTAyMDNiYTExNmQ2OCIsImlhdCI6MTc4MjE0NDA0MSwiZXhwIjoxNzgyMTQ0OTQxLCJhdWQiOiJhaS1wbGFjZW1lbnQtaHViLWNsaWVudCIsImlzcyI6ImFpLXBsYWNlbWVudC1odWIifQ.mO_pZBpKejqfCuXIDDxhAsCBJXpXUfi_DxLe8LEec7w"
+        }
+      }
+    }
+  },
+  {
+    "action": "Register User B",
+    "payload": {
+      "email": "user2_1782144041862@test.com"
+    },
+    "response": {
+      "status": 201,
+      "data": {
+        "success": true,
+        "message": "Account created successfully",
+        "data": {
+          "user": {
+            "id": "77089c84-e017-42f7-a91f-e0637a6726ea",
+            "name": "User Two",
+            "email": "user2_1782144041862@test.com",
+            "role": "USER",
+            "deleted_at": null,
+            "created_at": "2026-06-22T16:00:43.756Z",
+            "updated_at": "2026-06-22T16:00:43.756Z"
+          },
+          "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc3MDg5Yzg0LWUwMTctNDJmNy1hOTFmLWUwNjM3YTY3MjZlYSIsImlhdCI6MTc4MjE0NDA0NCwiZXhwIjoxNzgyMTQ0OTQ0LCJhdWQiOiJhaS1wbGFjZW1lbnQtaHViLWNsaWVudCIsImlzcyI6ImFpLXBsYWNlbWVudC1odWIifQ.PsLhU_JGi_5asssutNolwnQG6QEwqLvO0T8ymOAbvlA"
+        }
+      }
+    }
+  },
+  {
+    "action": "Start Interview",
+    "payload": {
+      "title": "Mock Frontend Interview",
+      "role": "Frontend Developer",
+      "difficulty": "MEDIUM",
+      "interviewType": "TECHNICAL",
+      "questionCount": 2
+    },
+    "response": {
+      "status": 201,
+      "data": {
+        "success": true,
+        "message": "Interview session started successfully",
+        "data": {
+          "id": "8a2fecf9-c67e-4950-ae9c-62b2216e6a8b",
+          "userId": "93894b1e-6c9d-4a89-a687-0203ba116d68",
+          "title": "Mock Frontend Interview",
+          "role": "Frontend Developer",
+          "difficulty": "MEDIUM",
+          "interviewType": "TECHNICAL",
+          "status": "IN_PROGRESS",
+          "questionCount": 2,
+          "overallScore": null,
+          "startedAt": null,
+          "completedAt": null,
+          "createdAt": "2026-06-22T16:00:45.505Z",
+          "updatedAt": "2026-06-22T16:00:45.505Z",
+          "questions": [
+            {
+              "id": "4ce60390-0473-4a76-a941-a5205567b3e0",
+              "question": "Mock question 1 for Frontend Developer (MEDIUM)",
+              "questionType": "TECHNICAL",
+              "order": 1
+            },
+            {
+              "id": "288f2eca-fb36-4bd0-89a2-7dbdf0232a7e",
+              "question": "Mock question 2 for Frontend Developer (MEDIUM)",
+              "questionType": "TECHNICAL",
+              "order": 2
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "action": "Get Session Details",
+    "payload": {
+      "sessionId": "8a2fecf9-c67e-4950-ae9c-62b2216e6a8b"
+    },
+    "response": {
+      "status": 200,
+      "data": {
+        "success": true,
+        "message": "Interview session details retrieved successfully",
+        "data": {
+          "id": "8a2fecf9-c67e-4950-ae9c-62b2216e6a8b",
+          "userId": "93894b1e-6c9d-4a89-a687-0203ba116d68",
+          "title": "Mock Frontend Interview",
+          "role": "Frontend Developer",
+          "difficulty": "MEDIUM",
+          "interviewType": "TECHNICAL",
+          "status": "IN_PROGRESS",
+          "questionCount": 2,
+          "overallScore": null,
+          "startedAt": null,
+          "completedAt": null,
+          "createdAt": "2026-06-22T16:00:45.505Z",
+          "updatedAt": "2026-06-22T16:00:45.505Z",
+          "questions": [
+            {
+              "id": "4ce60390-0473-4a76-a941-a5205567b3e0",
+              "sessionId": "8a2fecf9-c67e-4950-ae9c-62b2216e6a8b",
+              "question": "Mock question 1 for Frontend Developer (MEDIUM)",
+              "questionType": "TECHNICAL",
+              "order": 1,
+              "createdAt": "2026-06-22T16:00:45.505Z"
+            },
+            {
+              "id": "288f2eca-fb36-4bd0-89a2-7dbdf0232a7e",
+              "sessionId": "8a2fecf9-c67e-4950-ae9c-62b2216e6a8b",
+              "question": "Mock question 2 for Frontend Developer (MEDIUM)",
+              "questionType": "TECHNICAL",
+              "order": 2,
+              "createdAt": "2026-06-22T16:00:45.505Z"
+            }
+          ],
+          "answers": []
+        }
+      }
+    }
+  },
+  {
+    "action": "Submit Answer",
+    "payload": {
+      "questionId": "4ce60390-0473-4a76-a941-a5205567b3e0",
+      "answer": "React is a JavaScript library for building user interfaces."
+    },
+    "response": {
+      "status": 201,
+      "data": {
+        "success": true,
+        "message": "Answer submitted and evaluated successfully",
+        "data": {
+          "id": "86d7f89c-3930-474e-986d-c89ba2c8283a",
+          "sessionId": "8a2fecf9-c67e-4950-ae9c-62b2216e6a8b",
+          "questionId": "4ce60390-0473-4a76-a941-a5205567b3e0",
+          "answer": "React is a JavaScript library for building user interfaces.",
+          "score": 85,
+          "strengths": [
+            "Good communication",
+            "Clear structure"
+          ],
+          "weaknesses": [
+            "Lacks deep technical detail"
+          ],
+          "suggestions": [
+            "Provide more concrete examples"
+          ],
+          "feedback": "Overall a very solid answer, but could be improved with more specifics.",
+          "createdAt": "2026-06-22T16:00:52.877Z"
+        }
+      }
+    }
+  },
+  {
+    "action": "Test Duplicate Answer",
+    "payload": {
+      "questionId": "4ce60390-0473-4a76-a941-a5205567b3e0",
+      "answer": "React is a JavaScript library for building user interfaces."
+    },
+    "response": {
+      "status": 400,
+      "data": {
+        "success": false,
+        "error": "Question has already been answered",
+        "code": "BAD_REQUEST"
+      }
+    }
+  },
+  {
+    "action": "Test Ownership Validation (GET)",
+    "payload": {
+      "sessionId": "8a2fecf9-c67e-4950-ae9c-62b2216e6a8b"
+    },
+    "response": {
+      "status": 404,
+      "data": {
+        "success": false,
+        "error": "Session not found",
+        "code": "NOT_FOUND"
+      }
+    }
+  },
+  {
+    "action": "Complete Interview",
+    "payload": {
+      "sessionId": "8a2fecf9-c67e-4950-ae9c-62b2216e6a8b"
+    },
+    "response": {
+      "status": 200,
+      "data": {
+        "success": true,
+        "message": "Interview session completed",
+        "data": {
+          "id": "8a2fecf9-c67e-4950-ae9c-62b2216e6a8b",
+          "userId": "93894b1e-6c9d-4a89-a687-0203ba116d68",
+          "title": "Mock Frontend Interview",
+          "role": "Frontend Developer",
+          "difficulty": "MEDIUM",
+          "interviewType": "TECHNICAL",
+          "status": "COMPLETED",
+          "questionCount": 2,
+          "overallScore": 85,
+          "startedAt": null,
+          "completedAt": "2026-06-22T16:00:58.049Z",
+          "createdAt": "2026-06-22T16:00:45.505Z",
+          "updatedAt": "2026-06-22T16:00:58.055Z"
+        }
+      }
+    }
+  },
+  {
+    "action": "Test Session Status Validation",
+    "payload": {
+      "questionId": "288f2eca-fb36-4bd0-89a2-7dbdf0232a7e"
+    },
+    "response": {
+      "status": 400,
+      "data": {
+        "success": false,
+        "error": "Cannot submit answers for a completed session",
+        "code": "BAD_REQUEST"
+      }
+    }
+  },
+  {
+    "action": "Get Interviews List",
+    "payload": null,
+    "response": {
+      "status": 200,
+      "data": {
+        "success": true,
+        "message": "Interview sessions retrieved successfully",
+        "data": [
+          {
+            "id": "8a2fecf9-c67e-4950-ae9c-62b2216e6a8b",
+            "title": "Mock Frontend Interview",
+            "role": "Frontend Developer",
+            "status": "COMPLETED",
+            "overallScore": 85,
+            "createdAt": "2026-06-22T16:00:45.505Z"
+          }
+        ]
+      }
+    }
+  }
+]

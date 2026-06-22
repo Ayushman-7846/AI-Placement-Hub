@@ -23,7 +23,7 @@ import authRouter from './auth.routes.js';
 
 // ── Phase 3+ Feature Routers (uncomment when implemented) ─────────
 // import userRouter from './user.routes.js';
-// import interviewRouter from './interview.routes.js';
+import interviewRouter from './interview.routes.js';
 // import questionRouter from './question.routes.js';
 // import resumeRouter from './resume.routes.js';
 // import progressRouter from './progress.routes.js';
@@ -57,7 +57,7 @@ apiRouter.use('/auth', authRouter);
 
 // ── Phase 3+: Feature Routers ─────────────────────────────────────
 // apiRouter.use('/users', userRouter);
-// apiRouter.use('/interviews', interviewRouter);
+apiRouter.use('/interviews', interviewRouter);
 // apiRouter.use('/questions', questionRouter);
 // apiRouter.use('/resume', resumeRouter);
 // apiRouter.use('/progress', progressRouter);
@@ -79,8 +79,6 @@ const createPlaceholder = (resource) => (req, res) => {
 
 apiRouter.all('/users', createPlaceholder('Users'));
 apiRouter.all('/users/{*path}', createPlaceholder('Users'));
-apiRouter.all('/interviews', createPlaceholder('Interviews'));
-apiRouter.all('/interviews/{*path}', createPlaceholder('Interviews'));
 apiRouter.all('/questions', createPlaceholder('Questions'));
 apiRouter.all('/questions/{*path}', createPlaceholder('Questions'));
 apiRouter.all('/resume', createPlaceholder('Resume'));
