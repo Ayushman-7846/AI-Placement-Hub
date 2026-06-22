@@ -11,6 +11,7 @@
 
 // ── Phase 2B ──────────────────────────────────────────────────────
 export { default as AuthLayout } from './AuthLayout.jsx';
+export { default as AppLayout } from './AppLayout.jsx';
 
 // ── Future Phases ─────────────────────────────────────────────────
 // export { default as DashboardLayout } from './DashboardLayout';

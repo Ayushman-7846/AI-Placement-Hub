@@ -15,6 +15,9 @@ export { default as Button } from './Button.jsx';
 export { default as Input } from './Input.jsx';
 export { default as FormError } from './FormError.jsx';
 export { default as LoadingSpinner } from './LoadingSpinner.jsx';
+export { default as UserAvatar } from './UserAvatar.jsx';
+export { default as PageHeader } from './PageHeader.jsx';
+export { default as EmptyState } from './EmptyState.jsx';
 
 // ── Future Phases ─────────────────────────────────────────────────
 // export { default as Card } from './Card';

@@ -28,6 +28,10 @@ import {
   LoginPage,
   ProfilePage,
   RegisterPage,
+  InterviewsPage,
+  ResumeAnalyzerPage,
+  QuestionGeneratorPage,
+  ProgressPage,
 } from '@pages';
 
 // ── Inline 404 Fallback ──────────────────────────────────────────
@@ -78,6 +82,8 @@ const NotFound = () => (
   </div>
 );
 
+import { AppLayout } from '@layouts';
+
 // ── Route Definitions ────────────────────────────────────────────
 
 function AppRoutes() {
@@ -93,37 +99,21 @@ function AppRoutes() {
       <Route path='/register' element={<RegisterPage />} />
 
       {/* ── Protected Routes ──────────────────────────────────── */}
-      {/* All routes below require authentication */}
+      {/* All routes below require authentication and are wrapped in AppLayout */}
+      
+      <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
+        {/* Main Dashboard */}
+        <Route path='/dashboard' element={<DashboardPage />} />
 
-      {/* Main Dashboard */}
-      <Route
-        path='/dashboard'
-        element={
-          <ProtectedRoute>
-            <DashboardPage />
-          </ProtectedRoute>
-        }
-      />
+        {/* User Profile */}
+        <Route path='/profile' element={<ProfilePage />} />
 
-      {/* User Profile */}
-      <Route
-        path='/profile'
-        element={
-          <ProtectedRoute>
-            <ProfilePage />
-          </ProtectedRoute>
-        }
-      />
-
-      {/* ── Future Phase Routes (not yet wired) ─────────────────
-           Uncomment when page implementations are available.
-
-      <Route path='/interview' element={<ProtectedRoute><InterviewPage /></ProtectedRoute>} />
-      <Route path='/interview/:sessionId' element={<ProtectedRoute><InterviewSessionPage /></ProtectedRoute>} />
-      <Route path='/resume' element={<ProtectedRoute><ResumePage /></ProtectedRoute>} />
-      <Route path='/questions' element={<ProtectedRoute><QuestionsPage /></ProtectedRoute>} />
-      <Route path='/progress' element={<ProtectedRoute><ProgressPage /></ProtectedRoute>} />
-      ── */}
+        {/* Phase 3 Placeholder Routes */}
+        <Route path='/interviews' element={<InterviewsPage />} />
+        <Route path='/resume-analyzer' element={<ResumeAnalyzerPage />} />
+        <Route path='/question-generator' element={<QuestionGeneratorPage />} />
+        <Route path='/progress' element={<ProgressPage />} />
+      </Route>
 
       {/* ── Convenience Redirect ─────────────────────────────── */}
       {/* /home → / for any legacy links */}

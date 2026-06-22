@@ -19,6 +19,12 @@ export { default as RegisterPage } from './RegisterPage.jsx';
 export { default as DashboardPage } from './DashboardPage.jsx';
 export { default as ProfilePage } from './ProfilePage.jsx';
 
+// ── Phase 3: Placeholder Pages ─────────────────────────────────────
+export { default as InterviewsPage } from './InterviewsPage.jsx';
+export { default as ResumeAnalyzerPage } from './ResumeAnalyzerPage.jsx';
+export { default as QuestionGeneratorPage } from './QuestionGeneratorPage.jsx';
+export { default as ProgressPage } from './ProgressPage.jsx';
+
 // ── Future Phases ─────────────────────────────────────────────────
 // export { default as InterviewPage } from './InterviewPage';
 // export { default as InterviewSessionPage } from './InterviewSessionPage';

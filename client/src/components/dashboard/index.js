@@ -19,4 +19,5 @@
 // export { default as UpcomingInterviews } from './UpcomingInterviews';
 // export { default as PerformanceChart } from './PerformanceChart';
 
-export {}; // Phase 1 placeholder
+export { default as StatCard } from './StatCard.jsx';
+export { default as FeatureCard } from './FeatureCard.jsx';
