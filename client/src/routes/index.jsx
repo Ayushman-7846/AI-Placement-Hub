@@ -29,6 +29,9 @@ import {
   ProfilePage,
   RegisterPage,
   InterviewsPage,
+  InterviewSetupPage,
+  InterviewSessionPage,
+  InterviewResultsPage,
   ResumeAnalyzerPage,
   QuestionGeneratorPage,
   ProgressPage,
@@ -108,8 +111,13 @@ function AppRoutes() {
         {/* User Profile */}
         <Route path='/profile' element={<ProfilePage />} />
 
-        {/* Phase 3 Placeholder Routes */}
+        {/* Interview Feature Routes */}
         <Route path='/interviews' element={<InterviewsPage />} />
+        <Route path='/interviews/setup' element={<InterviewSetupPage />} />
+        <Route path='/interviews/session/:sessionId' element={<InterviewSessionPage />} />
+        <Route path='/interviews/results/:sessionId' element={<InterviewResultsPage />} />
+
+        {/* Phase 5 Placeholder Routes */}
         <Route path='/resume-analyzer' element={<ResumeAnalyzerPage />} />
         <Route path='/question-generator' element={<QuestionGeneratorPage />} />
         <Route path='/progress' element={<ProgressPage />} />

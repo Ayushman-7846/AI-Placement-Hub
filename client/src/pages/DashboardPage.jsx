@@ -7,14 +7,41 @@
  * Access: Protected (ProtectedRoute)
  */
 
-import { Target, FileText, HelpCircle, TrendingUp, CalendarDays, Award, Star, Flame } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Target, FileText, HelpCircle, TrendingUp, CalendarDays, Award, Star, Flame, ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import useAuth from '@hooks/useAuth.js';
-import { PageHeader } from '@components/common';
+import { PageHeader, Button } from '@components/common';
 import { StatCard, FeatureCard } from '@components/dashboard';
+import { InterviewHistoryTable } from '@components/interview';
+import useInterview from '@hooks/useInterview.js';
 
 function DashboardPage() {
   const { user } = useAuth();
+  const navigate = useNavigate();
+  const { getSessions } = useInterview();
   const firstName = user?.name?.split(' ')[0] ?? 'there';
+  
+  const [recentSessions, setRecentSessions] = useState([]);
+
+  useEffect(() => {
+    let isMounted = true;
+    const fetchRecent = async () => {
+      try {
+        const data = await getSessions();
+        if (isMounted) {
+          // Keep only the 3 most recent sessions
+          setRecentSessions(data.slice(0, 3));
+        }
+      } catch (error) {
+        console.error('Failed to fetch recent sessions:', error);
+      }
+    };
+    fetchRecent();
+    return () => {
+      isMounted = false;
+    };
+  }, [getSessions]);
 
   // Placeholder metrics (Phase 3 Mock Data)
   const stats = [
@@ -29,7 +56,7 @@ function DashboardPage() {
       title: 'Start Mock Interview', 
       description: 'Practice with an AI interviewer tailored to your target role.', 
       icon: Target, 
-      to: '/interviews',
+      to: '/interviews/setup',
       disabled: false
     },
     { 
@@ -93,14 +120,26 @@ function DashboardPage() {
         </div>
       </section>
 
-      {/* ── Recent Activity (Placeholder) ──────────────────────────── */}
+      {/* ── Recent Activity ────────────────────────────────────────── */}
       <section className="mb-4">
-        <h2 className="text-lg font-semibold text-text-primary mb-4">Recent Activity</h2>
-        <div className="glass-card p-8 text-center border-dashed">
-          <Star className="w-10 h-10 text-primary-500/40 mx-auto mb-3" />
-          <h3 className="text-text-primary font-medium mb-1">No recent activity</h3>
-          <p className="text-sm text-text-tertiary">Your latest interview sessions and resume uploads will appear here.</p>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold text-text-primary">Recent Interviews</h2>
+          {recentSessions.length > 0 && (
+            <Button variant="ghost" size="sm" onClick={() => navigate('/interviews')} className="text-text-secondary hover:text-primary-400">
+              View All <ArrowRight className="w-4 h-4 ml-1" />
+            </Button>
+          )}
         </div>
+        
+        {recentSessions.length > 0 ? (
+          <InterviewHistoryTable sessions={recentSessions} />
+        ) : (
+          <div className="glass-card p-8 text-center border-dashed">
+            <Star className="w-10 h-10 text-primary-500/40 mx-auto mb-3" />
+            <h3 className="text-text-primary font-medium mb-1">No recent activity</h3>
+            <p className="text-sm text-text-tertiary">Your latest interview sessions will appear here.</p>
+          </div>
+        )}
       </section>
 
     </div>
